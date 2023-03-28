@@ -27,9 +27,9 @@ public class DoktorkoController : MonoBehaviour
     {
 
         float moveInput = Input.GetAxis("Horizontal");
-        
 
-        if(isGrounded && Input.GetKeyDown(KeyCode.W))
+
+        if (isGrounded && (Input.GetKeyDown(KeyCode.W) || (Input.GetKeyDown(KeyCode.Space))))
         {
             anim.SetTrigger("takeOf");
             rb.velocity = Vector2.up * jumpForce;
@@ -98,5 +98,14 @@ public class DoktorkoController : MonoBehaviour
             isGrounded = true;
         }
         
+        if(collision.gameObject.tag == "cajocka")
+        {
+            Destroy(collision.gameObject);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        GameController.instance.triggerDoktorkoDestroyed.Invoke();
     }
 }
