@@ -10,9 +10,10 @@ public class DoktorkoController : MonoBehaviour
     [SerializeField] float jumpForce;
     private bool isGrounded;
     private bool isJumping;
-
+    private Vector3 screenBounds;
 
     private Animator anim;
+    [SerializeField] private AudioSource jump;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,6 +21,8 @@ public class DoktorkoController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         speed2 = 1;
         isJumping = false;
+        screenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height));
+
     }
 
     // Update is called once per frame
@@ -31,6 +34,7 @@ public class DoktorkoController : MonoBehaviour
 
         if (isGrounded && (Input.GetKeyDown(KeyCode.W) || (Input.GetKeyDown(KeyCode.Space))))
         {
+            jump.Play();
             anim.SetTrigger("takeOf");
             rb.velocity = Vector2.up * jumpForce;
             isGrounded = false;
@@ -88,7 +92,8 @@ public class DoktorkoController : MonoBehaviour
         {
             transform.eulerAngles = new Vector3(0, 180, 0);
         }
-        
+
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
